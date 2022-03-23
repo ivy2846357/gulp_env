@@ -1,0 +1,16 @@
+// gulp babel 相關設定檔
+// 針對 Syntax 和自帶的 API 與原生內置的 methods 做轉換
+// 前面由原本的 babel 進行轉換，而後面則改由 polyfill 進行轉換
+
+{
+    "presets": ["@babel/preset-env"],
+
+    "plugins": [
+        [
+          "@babel/plugin-transform-runtime",
+          {
+            "corejs": false
+          }
+        ]
+      ]
+  }
