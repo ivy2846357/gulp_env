@@ -5,11 +5,13 @@
 {
     "presets": ["@babel/preset-env"],
 
+    "minified": true,
+
     "plugins": [
         [
           "@babel/plugin-transform-runtime",
           {
-            "corejs": false
+            "corejs": 3
           }
         ]
       ]

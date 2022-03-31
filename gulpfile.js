@@ -6,8 +6,10 @@ const del = require('del');
 const sass = require('gulp-sass')(require('sass'));
 // 引用 gulp-postcss
 const postcss = require('gulp-postcss');
-// 引用 gulp-postcss 的 autoprefixer
+// 引用 autoprefixer
 const autoprefixer = require('autoprefixer');
+// 引用 cssnano
+const cssnano = require('cssnano');
 // 引用 gulp-babel
 const babel = require('gulp-babel');
 // 引用 gulp-sourcemaps
@@ -48,7 +50,7 @@ gulp.task('sass', ()=>
             outputStyle: 'compressed',         // 壓縮 Scss
             includePaths: ['node_modules/bootstrap/scss/'], // 導入 sass 模塊可能路徑
         }).on('error', sass.logError))        // 編譯 Scss
-        .pipe(postcss([autoprefixer()]))    // 使用 postcss 及 autoprefixer 進行 css 的編譯，另外引用 .browserslistrc 做網頁兼容性
+        .pipe(postcss([autoprefixer(), cssnano()]))    // 使用 postcss 及 autoprefixer 進行 css 的編譯，另外引用 .browserslistrc 做網頁兼容性
         .pipe(gulp.dest('public/css'))  // 指定編譯後的 css 檔案目錄
         .pipe(browserSync.stream()) // <= 注入更改內容
 );
@@ -85,7 +87,7 @@ gulp.task('copyFile', gulp.parallel('image'));
 gulp.task('watch', () => 
     // 網頁同步測試工具設定
     browserSync.init({
-        browser: "google chrome",   // 瀏覽器預設使用 google chrome
+        browser: 'google chrome',   // 瀏覽器預設使用 google chrome
         server: {
         baseDir: './public', // <= 指向虛擬伺服器需存取的資料夾
         },
@@ -141,6 +143,7 @@ gulp.task('default', gulp.series('clean', 'copyHTML', 'copyFile', 'sass', 'babel
 
 // 上傳至 github page（工作名稱：deploy）
 gulp.task('deploy', function() {
-  return gulp.src('./dist/**/*')
+  return gulp.src('./public/**/*')
     .pipe(ghPages());
 });
+
